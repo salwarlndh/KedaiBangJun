@@ -1,9 +1,79 @@
 {% extends 'homepage/layout.html' %}
+{% load static %}
 {% block title %}
-  Homepage
+  Home
 {% endblock %}
 {% block content %}
-  <div class="hero bg-light p-5 rounded-lg m-3">
-    <h1 class="display-4">Selamat Datang di Halaman Depan AIS</h1>
+<div id="hero"class="banner">
+  <h1>Taste of Home Cooking</h1>
+</div>
+
+<div id="dish" class="OurDish">
+  <div class="dish">
+    <h1><b>Our Special Dish</b></h1>
+    <h6><i>Special dishes are prepared with the best ingredients and authentic recipes typical of Kedai Bang Jun</i></h6>
   </div>
+  
+  <div class="row gap-5 ">
+    <div class="card" style="width: 21rem;">
+      <img src="{% static 'images/nasgor.png' %}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h4>Fried Rice</h4>
+        <p class="card-text">Cooked with secret herbs and selected spices, served with additional eggs, sliced ​​chicken or shrimp, and a sprinkle of fried onions.</p>
+      </div>
+    </div>
+    <div class="card" style="width: 21rem;">
+      <img src="{% static 'images/katsu.png' %}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h4>Chicken Katsu</h4>
+        <p class="card-text">Served with a signature savory and sweet sauce, creating a perfect blend of flavors in every bite. Perfect with warm rice or as a delicious snack anytime!</p>
+      </div>
+    </div>
+    <div class="card" style="width: 21rem;">
+      <img src="{% static 'images/migor.png' %}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h4>Fried Noodle</h4>
+        <p class="card-text">Full of flavor and appetizing aroma! Stir-fried with various fresh vegetables, sliced ​​chicken or shrimp, and just the right touch of sweet and savory.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="services" class="services">
+  <h1><b>Our Awesome Services</b></h1>
+  <h6><i>Enjoy friendly and fast service, a comfortable atmosphere, and quality dishes ready to pamper your tongue</i></h6>
+
+  <div class="col1">
+    <ul class="list-group list-group-horizontal">
+      <li class="list-group-item">
+        <i class="fa-solid fa-utensils" style="color: #033b20;" ></i>
+        <h4>Quality Food</h4>
+        <p>Quality dishes, fresh ingredients, authentic taste, satisfying every palate.</p>
+      </li>
+  
+      <li class="list-group-item">
+        <i class="fa-solid fa-mortar-pestle" style="color: #033b20;"></i>
+        <h4>Ingredients</h4>
+        <p>Fresh and quality ingredients, add flavor to every dish.</p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col2">
+    <ul class="list-group list-group-horizontal">
+      <li class="list-group-item">
+        <i class="fa-solid fa-fire" style="color: #033b20;"></i>
+        <h4>Serve Hot</h4>
+        <p>Served hot, preserving the taste and freshness of the dish.</p>
+      </li>
+  
+      <li class="list-group-item">
+        <i class="fa-solid fa-book" style="color: #033b20;"></i>    
+        <h4>Easy Recipes</h4>
+        <p>A simple recipe, easy to follow, quick and suitable for all.</p>
+      </li>
+    </ul>
+  </div>
+</div>
 {% endblock %}
