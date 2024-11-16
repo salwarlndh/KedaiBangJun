@@ -6,6 +6,7 @@ def homepage(request):
 def about(request):
     return render(request, 'homepage/about.html')
 
+<<<<<<< HEAD
 def products_index(request):
     return render(request, 'Products/index.html')
 
@@ -24,3 +25,10 @@ def cart_delete(request):
 
 def cart_update(request):
     return render(request, "Cart/update_cart.html")
+=======
+def product(request):
+    return render(request, 'homepage/product.html')
+
+def contact(request):
+    return render(request, 'homepage/contact.html')
+>>>>>>> 96dd5c79f8ecbdccb2c99f913cc1b33f07b1def3
