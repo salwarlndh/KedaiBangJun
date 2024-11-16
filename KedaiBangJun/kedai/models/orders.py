@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 from kedai.models.products import Product
 from kedai.models.customers import Customer
 
@@ -9,6 +10,10 @@ class Order(models.Model):
         ('Delivered', 'Delivered'),
         ('Canceled', 'Canceled'),
     ]
+    id_orders = models.IntegerField(unique=True, validators=[
+        MinValueValidator(1),
+        MaxValueValidator(5**5-1) # id_orders maksimal 5 digit
+    ])
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()

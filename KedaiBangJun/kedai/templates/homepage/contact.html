@@ -1,0 +1,36 @@
+{% extends 'homepage/layout.html' %}
+{% block title %}
+  Homepage
+{% endblock %}
+{% block content %}
+{% load static %}
+  <div class="hero p-5 rounded-5" id="heroContact">
+    <h1 class="display-4 text-center">Contact US</h1>
+    <div class="container mt-5">
+        <div class="row gx-5">
+            <div class="col-7">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput2" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="username">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlTextarea1" class="form-label">Criticism</label>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                <div class="mb-3 px-5">
+                  <a href="#" class="d-block btn mx-auto buttonCart">Submit</a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="maps">
+                  <img src="{% static 'images/maps.png' %}" alt="Maps Bang Jun" width="450" class="rounded-5">
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}

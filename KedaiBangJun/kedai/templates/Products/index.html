@@ -1,0 +1,68 @@
+{% extends 'homepage/layout.html' %}
+{% block title %}
+  Products
+{% endblock %}
+{% block content %}
+{% load static %}
+<div class="hero p-3 rounded-lg m-3" id="heroProduct">
+    <h1 class="display-6">Our Menu </h1>
+    <form method="GET" action="#" class="d-flex mb-3">
+      <input class="form-control me-2" type="search" name="q" placeholder="Find menu..." value="{{ query|default:'' }}" aria-label="Search">
+      <button class="btn btn-outline-light" type="submit" style="color: white;">Find</button>
+    </form>
+</div>
+<div class="container ps-4">
+    <div class="row row-cols-4 gy-3">
+        <div class="col-sm-auto">
+            <div class="card card-sm-auto" style="width: 18rem;">
+                <img src="{% static 'images/Mie_bangladesh.png' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Mie Bangladesh</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="d-block btn mx-auto buttonCart">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-auto">
+            <div class="card card-sm-auto" style="width: 18rem;">
+                <img src="{% static 'images/Mie_bangladesh.png' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Mie Bangladesh</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="d-block btn mx-auto buttonCart">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-auto">
+            <div class="card card-sm-auto" style="width: 18rem;">
+                <img src="{% static 'images/Mie_bangladesh.png' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Mie Bangladesh</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="d-block btn mx-auto buttonCart">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-auto">
+            <div class="card card-sm-auto" style="width: 18rem;">
+                <img src="{% static 'images/Mie_bangladesh.png' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Mie Bangladesh</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="d-block btn mx-auto buttonCart">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-auto">
+            <div class="card card-sm-auto" style="width: 18rem;">
+                <img src="{% static 'images/Mie_bangladesh.png' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Mie Bangladesh</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="d-block btn mx-auto buttonCart">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
