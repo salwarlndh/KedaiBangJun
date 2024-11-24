@@ -7,25 +7,15 @@
     <title>
       {% block title %}
       {% endblock %}
-<<<<<<< HEAD
     </title>
     {% load django_bootstrap5 %} {% bootstrap_css %}
     {% load static %}
-    {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> {% endcomment %}
     <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css"> 
     <link rel="stylesheet" href="{% static 'css/layout.css' %}" type="text/css">
     <link rel="icon" href="{% static 'images/Logo.png' %}" type="image/png">
-=======
-      Kedai Bang Jun
-    </title>
-    {% load django_bootstrap5 %} {% bootstrap_css %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/layout.css' %}" type="text/css"/>
-    <link rel="icon" href="{% static 'images/Logo.png' %}" type="images/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
->>>>>>> 96dd5c79f8ecbdccb2c99f913cc1b33f07b1def3
   </head>
   <body>
     <!-- Navbar -->
@@ -41,37 +31,28 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/home">Home</a>
+              <a class="nav-link" href="{% url 'homepage'%}">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/about">About Us</a>
+              <a class="nav-link" href="{% url 'about'%}">About Us</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/product">Product</a>
+              <a class="nav-link" href="{% url 'product_index'%}">Product</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/contact">Contact</a>
-<<<<<<< HEAD
+              <a class="nav-link" href="{% url 'contact'%}">Contact</a>
             </li>
             <li class="nav-item">
-              <a href="nav-link" href="/cart">
+              <a href="nav-link" href="{% url 'cart_index'%}">
                 <button type="submit" class="btn btn-outline-success" style="color: white;"><i class="fa-regular fa-cart-shopping mx-1" style="color: white;"></i>Cart
                   <span class="bagde bg-success text-white ms-2 mx-1 rounded-pill fs-6">0</span>
                 </button>
               </a>
-=======
->>>>>>> 96dd5c79f8ecbdccb2c99f913cc1b33f07b1def3
             </li>
           </ul>
         </div>
       </div>
     </nav>
-<<<<<<< HEAD
-      {% block content %}
-
-      {% endblock %}
-    {% bootstrap_javascript %}
-=======
     <section>
       {% comment %} <div class="container-fluid mx-n1 mt-4 mainLayout"> {% endcomment %}
         {% block content %}
@@ -90,9 +71,9 @@
               <div class="mb-3 text-light">
                   <h2 class="fw-bold">Home</h2>
                   <ul class="nav flex-column text-light gap-2">
-                      <li class="nav-item"><a href="{% url 'home' %}#hero" class="nav-link p-0 text-light">Hero</a></li>
-                      <li class="nav-item"><a href="{% url 'home' %}#dish" class="nav-link p-0 text-light">Special Dish</a></li>
-                      <li class="nav-item"><a href="{% url 'home' %}#services" class="nav-link p-0 text-light">Services</a></li>
+                      <li class="nav-item"><a href="{% url 'homepage' %}#hero" class="nav-link p-0 text-light">Hero</a></li>
+                      <li class="nav-item"><a href="{% url 'homepage' %}#dish" class="nav-link p-0 text-light">Special Dish</a></li>
+                      <li class="nav-item"><a href="{% url 'homepage' %}#services" class="nav-link p-0 text-light">Services</a></li>
                   </ul>
               </div>
   
@@ -160,6 +141,5 @@
       </div>
   </footer>
     {% bootstrap_javascript %}
->>>>>>> 96dd5c79f8ecbdccb2c99f913cc1b33f07b1def3
   </body>
 </html>

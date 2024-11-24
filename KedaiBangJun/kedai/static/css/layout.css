@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
@@ -11,90 +10,12 @@ body{
     background-color: #fdf5e5;
 }
 
-.navbarMain{
-    background-color: #033b20;
+.bg-primary{
+    background: #033b20 !important;
 }
 
-.nav-link {
-    color: #fdf5e5;
-    margin: 0 15px;
-}
-
-.navbar-brand {
-    color: #fdf5e5;
-}
-
-/* HOME */
-.banner {
-    position: absolute;
-    left: 0;
-    margin-top: -1.48rem;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url('../images/hero.jpg');
-    background-size: cover;
-    text-align: center;
-}
-
-.banner h1 {
-    font-size: 45px;
-    color: #fdf5e5;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
-    max-width: 500px;
-    margin: 0 auto;
-    font-family: "Montserrat", sans-serif;
-}
-
-/* Product */
-#heroProduct{
-    background-color: #9d121b;
-    color: white;
-}
-
-.buttonCart{
-    background-color: #033b20;
-    color: white;
-}
-
-.buttonCart:hover{
-    background-color: #9d121b;
-    color: white;
-    transition: ease-in;
-    transition-duration: 0.3s;
-    text-decoration: underline;
-}
-
-/* Contact Us */
-#heroContact{
-    background-image: url('../images/talenan.jpg');
-    background-size: cover;
-    background-color: #033b2087;
-    color: white;
-    margin-top: 5rem;
-}
-
-.sidebox{
-    background-color: #9d121b;
-}
-
-.px-5 {
-    padding-left: 15rem !important;
-    padding-right: 15rem !important;
-  }
-=======
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body{
-    background-color: #fdf5e5;
+.text-primary{
+    color: #033b20 !important;
 }
 
 .navbarMain{
@@ -194,13 +115,45 @@ body{
     text-align: justify;
 }
 
+/* Product */
+#heroProduct{
+    background-color: #9d121b;
+    color: white;
+}
+
+.buttonCart{
+    background-color: #033b20;
+    color: white;
+}
+
+.buttonCart:hover{
+    background-color: #9d121b;
+    color: white;
+    transition: ease-in;
+    transition-duration: 0.3s;
+    text-decoration: underline;
+}
+
+/* Contact Us */
+#heroContact{
+    background-image: url('../images/talenan.jpg');
+    background-size: cover;
+    background-color: #033b2087;
+    color: white;
+    margin-top: 5rem;
+}
+
+.sidebox{
+    background-color: #9d121b;
+}
+
+.px-5 {
+    padding-left: 15rem !important;
+    padding-right: 15rem !important;
+  }
+
 /* Footer */
 #footer {
     
     background-color: #033b20;
 }
-
-/* .nav-link:hover {
-    color: #fdf5e5
-} */
->>>>>>> 96dd5c79f8ecbdccb2c99f913cc1b33f07b1def3
