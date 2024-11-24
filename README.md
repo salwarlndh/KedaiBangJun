@@ -10,5 +10,5 @@
 ![logotulisan](https://github.com/user-attachments/assets/cfd037d4-e2db-45a2-954d-0319472802e7)
 
 ### Kedai Bang Jun 
-##### Kedai Bang Jun adalah tempat makan sederhana yang menyajikan masakan rumahan dengan cita rasa lezat, harga yang ramah di kantong, dan porsi yang pas. Mengusung konsep "makan di rumah sendiri," Kedai Bang Jun menghadirkan berbagai menu favorit khas masakan sehari-hari seperti ayam goreng, tempe orek, sayur lodeh, hingga sambal terasi yang pedasnya pas di lidah.
+##### Kedai Bang Jun adalah tempat makan sederhana yang menyajikan masakan rumahan dengan cita rasa lezat, harga yang ramah di kantong, dan porsi yang pas. Mengusung konsep "makan di rumah sendiri," Kedai Bang Jun menghadirkan berbagai menu favorit khas masakan sehari-hari seperti ayam goreng, nasi goreng, mie goreng.
 ##### Suasana kedai yang sederhana namun nyaman membuat siapa pun betah untuk makan di tempat atau membawanya pulang. Pelayanan yang ramah dan cepat semakin melengkapi pengalaman makan di Kedai Bang Jun. Nikmati masakan rumahan yang murah, enak, dan bikin kangen hanya di Kedai Bang Jun!
