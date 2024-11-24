@@ -49,6 +49,21 @@
                 </button>
               </a>
             </li>
+            <ul class="navbar-nav ms-auto me-3 gap-2">          
+              {% if user.is_authenticated %}
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'sign-out' %}">
+                          Sign Out <i class="fa-solid fa-arrow-right-from-bracket ms-2"></i>
+                      </a>
+                  </li>
+              {% else %}
+                  <li class="nav-item">
+                      <a class="nav-link {% if section == 'sign-in' %} active{% endif %}" href="{% url 'sign-in' %}">
+                          Sign In<i class="fas fa-arrow-right-to-bracket ms-2"></i>
+                      </a>
+                  </li>
+              {% endif %}
+          </ul>   
           </ul>
         </div>
       </div>
