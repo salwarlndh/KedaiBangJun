@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .decorators import kasir_required
 
 def homepage(request):
     return render(request, 'homepage/index.html')
@@ -29,6 +30,14 @@ def product(request):
 
 def contact(request):
     return render(request, 'homepage/contact.html')
+
+# @kasir_required()
+def Dashboard(request):
+
+    context = {
+        'section': 'dashboard',
+    }
+    return render(request, 'dashboard/index.html', context)
 
 def SignIn(request):
     if request.method == 'POST':

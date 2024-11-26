@@ -11,6 +11,9 @@ urlpatterns = [
     path('cart_delete/', views.cart_delete, name='cart_delete'),
     path('cart_update/', views.cart_update, name='cart_update'),
     
+    path('dashboard', views.Dashboard, name='dashboard'),
+
+    
     path('sign-in/', views.SignIn, name='sign-in'),
     path('sign-out/', views.SignOut, name='sign-out'),
 ]
