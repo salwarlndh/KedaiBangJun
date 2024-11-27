@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+
+      {% endblock %}
+    </title>
+    {% load django_bootstrap5 %} {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}" type="text/css" />
+    <link rel="icon" href="{% static 'images/Logo.png' %}" type="image/png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav id="sidebar" class="navbar position-fixed navbar-dark fixed-start shadow-lg vh-100 d-flex flex-column align-items-start" style="background-color: #033b20; z-index: 1;">
+      <div class="container-fluid flex-column d-flex justify-content-between h-100">
+        <div class="w-100 d-flex flex-column">
+          <div class="text-white w-100 border-bottom border-white d-flex justify-content-between px-2 align-items-center" style="padding-bottom: 5.5px;">
+            <div class="navbar-brand fw-semibold fs-md-2 fs-5 d-flex align-items-center">
+              <a class="navbar-brand" href="/home"><img src="{% static 'images/Logo.png' %}" alt="Logo Kedai Bang Jun" width="60" height="60" /></a>
+              <a class="navbar-brand" href="/home"><img src="{% static 'images/logotulisan.png' %}" alt="Logo Kedai Bang Jun" width="170" height="40" /></a>
+            </div>
+            <button id="close-sidebar" class="btn btn-primary d-md-none" type="button"><span style="font-size: xx-large !important;"><i class="fas fa-xmark"></i></span></button>
+          </div>
+          <ul class="navbar-nav d-flex flex-column gap-3 mt-3 w-100 px-3">
+            <li class="nav-item">
+                <a class="nav-link fw-semibold {% if section == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                    <i class="fa-solid fa-chart-column fa-1x me-1"></i>Dashboard
+                </a>
+            </li>
+          </ul>
+        </div>
+
+        <ul class="navbar-nav d-flex flex-column w-100 border-top border-light pt-1 px-3">
+          <li class="nav-item">
+            {% if user.is_authenticated %}
+              <a class="nav-link fw-semibold" href="{% url 'sign-out' %}">Sign Out <i class="fa-solid fa-arrow-right-from-bracket ms-2"></i></a>
+            {% else %}
+              <a class="nav-link fw-semibold {% if section == 'signIn' %}active{% endif %}" href="{% url 'sign-in' %}">Sign In <i class="fas fa-arrow-right-to-bracket ms-2"></i></a>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <section class="d-flex justify-content-between align-items-center pe-5" style="z-index: 1010; background-color: #033b20;">
+      <div class="d-flex gap-3 align-items-center">
+        <button id="toggle-sidebar" class="btn btn-primary rounded-0 py-2 px-3" type="button"><span class="fs-4"><i class="fas fa-bars"></i></span></button>
+        <a id="brand-header" class="navbar-brand fw-semibold text-white opacity-0 d-flex align-items-center" href="{% url 'dashboard' %}" style="transition: opacity 0.5s ease-in-out; pointer-events: none;">
+          Kedai Bang Jun
+        </a>
+      </div>
+      <p class="d-md-block d-none text-white fw-semibold my-0">Hello, kasir</p>
+    </section>
+
+    <div id="overlay" class="overlay d-none"></div>
+    <section>
+      {% block content %}
+
+      {% endblock %}
+    </section>
+    <div class="w-100">
+      <footer class="border-top pt-2 w-100 position-fixed bottom-0">
+        <p class="text-center text-body-secondary w-100">&copy; 2024 Kedai Bang Jun, Allright Reserved.</p>
+      </footer>
+    </div>
+    {% bootstrap_javascript %}
+  </body>
+</html>

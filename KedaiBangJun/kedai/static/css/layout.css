@@ -152,9 +152,31 @@ body{
     padding-right: 15rem !important;
   }
 
+  .about-section {
+    margin-top: 8rem;
+  }
+  .about-image {
+    margin-top: 2rem;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 6rem;
+  }
+  .section-title {
+    margin: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  .section-content {
+    font-size: 1rem;
+    color: #7f8c8d;
+  }
+  .highlight {
+    color: #9d121b;
+  }
+  
 /* Footer */
 #footer {
-    
     background-color: #033b20;
 }
 

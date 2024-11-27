@@ -1,5 +1,7 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import User, Group
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 class Customer(models.Model):
     name = models.CharField(max_length=255)
@@ -9,3 +11,13 @@ class Customer(models.Model):
     
     def __str__(self):
         return self.name
+    
+@receiver(post_save, sender=Customer)
+def create_user_for_Customer(sender, instance, created, **kwargs):
+    if created:
+        user = User.objects.create_user(
+            username=instance.name,
+            password=instance.name,
+        )
+        customer_group, created = Group.objects.get_or_create(name='Customer')
+        user.groups.add(customer_group)
