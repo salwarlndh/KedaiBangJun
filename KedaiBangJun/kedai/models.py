@@ -3,5 +3,4 @@ from .models.customers import Customer
 from .models.kasir import Kasir
 from .models.orders import Order
 from .models.products import Product
-from .models.cart import Cart
 from .models.users import Users

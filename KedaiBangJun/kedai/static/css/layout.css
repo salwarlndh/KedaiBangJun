@@ -157,3 +157,11 @@ body{
     
     background-color: #033b20;
 }
+
+.Btncheckout:hover{
+    background-color: #9d121b;
+    color: white;
+    transition: ease-in;
+    transition-duration: 0.3s;
+    text-decoration: underline;
+}

@@ -10,15 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name="product",
-            name="stock",
-        ),
-        migrations.AddField(
-            model_name="product",
-            name="picture",
-            field=models.ImageField(blank=True, null=True, upload_to="menu_pict/"),
-        ),
         migrations.AlterField(
             model_name="order",
             name="status",
