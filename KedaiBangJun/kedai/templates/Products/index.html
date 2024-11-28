@@ -5,24 +5,22 @@
 {% block content %}
 {% load static %}
 <div class="hero p-3 rounded-lg m-3 my-5" id="heroProduct">
-    <h1 class="display-6">Our Menu </h1>
-    <form method="GET" action="#" class="d-flex mb-3">
-      <input class="form-control me-2" type="search" name="q" placeholder="Find menu..." value="{{ query|default:'' }}" aria-label="Search">
-      <button class="btn btn-outline-light" type="submit" style="color: white;">Find</button>
-    </form>
+  <h1 class="display-6">Our Menu </h1>
+  <form method="GET" action="#" class="d-flex mb-3">
+    <input class="form-control me-2" type="search" name="q" placeholder="Find menu..." value="{{ query|default:'' }}" aria-label="Search">
 </div>
 <div class="container ps-4">
-    <div class="row row-cols-4 gy-3">
-      {% for products in product %}
-        <div class="col-sm-auto">
-            <div class="card card-sm-auto" style="width: 18rem;">
-                <img src="{{ products.picture.url }}" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">{{ products.name }}</h5>
-                  <p class="card-text">{{ products.description }}</p>
-                  <p class="card-text">Rp. {{ products.price }}</p>
-                  <p class="card-text">ID :  {{ products.id }}</p>
-                  <button type="button" value="{{ products.id }}" class="btn buttonCart" id="add-cart">Add to Cart</button>
+  <div class="row row-cols-4 gy-3">
+    {% for products in product %}
+      <div class="col-sm-auto">
+          <div class="card card-sm-auto" style="width: 18rem;">
+              <img src="{{ products.picture.url }}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{ products.name }}</h5>
+                <p class="card-text">{{ products.description }}</p>
+                <p class="card-text">Rp. {{ products.price }}</p>
+                <p class="card-text">ID :  {{ products.id }}</p>
+                <button type="button" value="{{ products.id }}" class="btn buttonCart" id="add-cart">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -31,36 +29,40 @@
 </div>
 
 <script>
-  $(document).on('click', '#add-cart', function(e){
+    
+  $(document).on('click', '#add-cart', function (e) {
     e.preventDefault();
-    var product_id = $(this).val();
-    $.ajax({
-      type: 'POST',
-      url: '{% url 'cart_add' %}',  // Sesuaikan dengan URL view yang menangani penambahan cart
-      data: {
-        product_id: product_id,
-        csrfmiddlewaretoken: '{{ csrf_token }}',
-        action: 'post'
-      },
 
-<<<<<<< HEAD
-      success: function(response){
-        if(response.status == 'success'){
-          document.getElementById("cart_quantity").textContent = response.qty;  // Perbarui jumlah cart
-          alert("Product added to cart!");
-        } else {
-          alert("Error: " + response.message);
-        }
-=======
-      success: function(json){
-        document.getElementById("cart_quantity").textContent=json.qty
->>>>>>> 330cacfe67301bf513e6beb74525d65bb389f03a
-      },
+    const productId = $(this).val();
+    const productName = $(this).closest('.card-body').find('.card-title').text();
+    const productPrice = parseFloat(
+        $(this).closest('.card-body').find('.card-text').last().text().replace(/[^0-9.-]+/g, '')
+    );
 
-      error: function(xhr, errmsg, err){
-        alert("Something went wrong. Please try again.");
-      }
-    });
-  });
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    const productIndex = cart.findIndex((item) => item.id === productId);
+    if (productIndex > -1) {
+        cart[productIndex].quantity += 1;
+    } else {
+        cart.push({
+            id: productId,
+            name: productName,
+            price: productPrice,
+            quantity: 1,
+        });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartQuantity();
+});
+
+function updateCartQuantity() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.getElementById('cart_quantity').textContent = totalQuantity;
+}
+
 </script>
+
 {% endblock %}
