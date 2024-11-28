@@ -46,7 +46,7 @@
             <li class="nav-item">
               <a href="{% url 'cart_index' %}" class="btn btn-outline-success" style="color: white;">
                 <i class="fa-regular fa-cart-shopping mx-1" style="color: white;"></i>Cart
-                <span class="bagde bg-success text-white ms-2 mx-1 rounded-pill fs-6" id="cart_quantity">{{ cart|length }}</span>
+                <span class="bagde bg-success text-white ms-2 mx-1 rounded-pill fs-6" id="cart_quantity">{{ cart_items|length }}</span>
               </a>
             </li>
             <ul class="navbar-nav ms-auto me-3 gap-2">          
