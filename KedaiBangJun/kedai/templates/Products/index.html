@@ -4,10 +4,19 @@
 {% endblock %}
 {% block content %}
 {% load static %}
+<<<<<<< HEAD
 <div class="hero p-3 rounded-lg m-3 my-5" id="heroProduct">
   <h1 class="display-6">Our Menu </h1>
   <form method="GET" action="#" class="d-flex mb-3">
     <input class="form-control me-2" type="search" name="q" placeholder="Find menu..." value="{{ query|default:'' }}" aria-label="Search">
+=======
+<div class="hero p-4 rounded-lg m-3 my-5" id="heroProduct">
+    <h1 class="display-6">Our Menu </h1>
+    <form method="GET" action="{% url 'product_search' %}" class="d-flex mb-3">
+      <input class="form-control me-2" type="search" name="q" placeholder="Find products..." value="{{ query|default:'' }}" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Find</button>
+    </form>
+>>>>>>> 2a401f08d1ccd0b3f9d3f6c7c39e2b073dbd6d60
 </div>
 <div class="container ps-4">
   <div class="row row-cols-4 gy-3">
@@ -33,6 +42,7 @@
   $(document).on('click', '#add-cart', function (e) {
     e.preventDefault();
 
+<<<<<<< HEAD
     const productId = $(this).val();
     const productName = $(this).closest('.card-body').find('.card-title').text();
     const productPrice = parseFloat(
@@ -62,6 +72,22 @@ function updateCartQuantity() {
     let totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
     document.getElementById('cart_quantity').textContent = totalQuantity;
 }
+=======
+<<<<<<< HEAD
+      success: function(response){
+        if(response.status == 'success'){
+          document.getElementById("cart_quantity").textContent = response.qty;  // Perbarui jumlah cart
+          alert("Product added to cart!");
+        } else {
+          alert("Error: " + response.message);
+        }
+=======
+      success: function(json){
+        //console.log(json)
+        document.getElementById("cart_quantity").textContent=json.qty
+>>>>>>> 330cacfe67301bf513e6beb74525d65bb389f03a
+      },
+>>>>>>> 2a401f08d1ccd0b3f9d3f6c7c39e2b073dbd6d60
 
 </script>
 

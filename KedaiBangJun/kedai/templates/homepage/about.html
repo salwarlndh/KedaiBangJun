@@ -4,55 +4,22 @@
 {% endblock %}
 {% block content %}
   {% load static %}
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>About Us</title>
-      <!-- Link ke Bootstrap CSS -->
-      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-      <style>
-        .about-section {
-          margin-top: 8rem;
-        }
-        .about-image {
-          margin-top: 2rem;
-          max-width: 100%;
-          height: auto;
-        }
-        .section-title {
-          margin: 2rem 0;
-          font-size: 2.1rem;
-          font-weight: bold;
-          color: #2c3e50;
-        }
-        .section-content {
-          font-size: 1rem;
-          color: #7f8c8d;
-        }
-        .highlight {
-          color: #9d121b;
-        }
-      </style>
-    </head>
-    <body>
       <div id="heroabt" class="container about-section">
         <!-- Title Section -->
         <div class="row">
           <div class="col-md-6">
-            <h2 class="section-title">We are here to invite as many people as possible to try our <span class="highlight">signature</span> menu.</h2>
-            <p class="section-content text-justify mb-0">We are here with the aim of inviting as many people as possible to try our signature menu. This menu is a special choice that we are proud of, designed with quality ingredients and unique flavors. We believe that everyone deserves to taste the deliciousness that we offer, and we want to provide an unforgettable culinary experience for all visitors. With the best hospitality and service, we invite you to taste the dishes that are many people's favorites and enjoy special moments with us.</p>
+            <h2 class="section-title me-0">We are here to invite as many people as possible to try our <span class="highlight">signature</span> menu.</h2>
+            <p class="section-content text-justify">We are here with the aim of inviting as many people as possible to try our signature menu. This menu is a special choice that we are proud of, designed with quality ingredients and unique flavors. We believe that everyone deserves to taste the deliciousness that we offer, and we want to provide an unforgettable culinary experience for all visitors. With the best hospitality and service, we invite you to taste the dishes that are many people's favorites and enjoy special moments with us.</p>
           </div>
 
           <!-- Right Column - Image -->
           <div class="col-md-6">
-            <img src="{% static 'images/chef.jpeg' %}" alt="Image" class="about-image" />
+            <img src="{% static 'images/chef.jpeg' %}" alt="Image" class="about-image mb-0" />
           </div>
         </div>
         <div class="hero rounded-lg">
           <h1 id="Philosophy" class="section-title">Philosophy</h1>
-          <p class="section-content text-justify mt-0 mb-5">
+          <p class="section-content text-justify mb-5">
             Welcome to Kedai Bang Jun, a place where authentic home-cooked flavors are present in every dish. <i>Taste of Home Cooking</i>, we are committed to presenting the pleasure and comfort of home-cooked food, made from fresh ingredients and selected spices. At Kedai Bang Jun, we believe that food is not just about taste, but also about memories, togetherness, and lasting experiences. Every menu we serve is a creation full of love, inspired by traditional recipes passed down from generation to generation. From simple dishes to special menus, all are prepared with full attention to detail, taste, and quality. We invite you to feel the warmth and hospitality at Kedai Bang Jun. Make your meal with family or friends more memorable with our dishes that pamper your tongue and heart. Let's enjoy <i>Taste of Home Cooking</i> in every mouthful.
           </p>
         </div>
@@ -62,6 +29,4 @@
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    </body>
-  </html>
 {% endblock %}

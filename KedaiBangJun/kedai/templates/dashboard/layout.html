@@ -28,9 +28,7 @@
           </div>
           <ul class="navbar-nav d-flex flex-column gap-3 mt-3 w-100 px-3">
             <li class="nav-item">
-                <a class="nav-link fw-semibold {% if section == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
-                    <i class="fa-solid fa-chart-column fa-1x me-1"></i>Dashboard
-                </a>
+              <a class="nav-link fw-semibold {% if section == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}"><i class="fa-solid fa-chart-column fa-1x me-1"></i>Dashboard</a>
             </li>
           </ul>
         </div>
@@ -38,9 +36,12 @@
         <ul class="navbar-nav d-flex flex-column w-100 border-top border-light pt-1 px-3">
           <li class="nav-item">
             {% if user.is_authenticated %}
-              <a class="nav-link fw-semibold" href="{% url 'sign-out' %}">Sign Out <i class="fa-solid fa-arrow-right-from-bracket ms-2"></i></a>
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <a class="nav-link fw-semibold" href="{% url 'logout' %}">Sign Out <i class="fa-solid fa-arrow-right-from-bracket fa-1x ms-2"></i></a>
+              </form>
             {% else %}
-              <a class="nav-link fw-semibold {% if section == 'signIn' %}active{% endif %}" href="{% url 'sign-in' %}">Sign In <i class="fas fa-arrow-right-to-bracket ms-2"></i></a>
+              <a class="nav-link fw-semibold {% if section == 'login' %}active{% endif %}" href="{% url 'sign-in' %}">Sign In <i class="fas fa-arrow-right-to-bracket ms-2"></i></a>
             {% endif %}
           </li>
         </ul>
@@ -50,11 +51,9 @@
     <section class="d-flex justify-content-between align-items-center pe-5" style="z-index: 1010; background-color: #033b20;">
       <div class="d-flex gap-3 align-items-center">
         <button id="toggle-sidebar" class="btn btn-primary rounded-0 py-2 px-3" type="button"><span class="fs-4"><i class="fas fa-bars"></i></span></button>
-        <a id="brand-header" class="navbar-brand fw-semibold text-white opacity-0 d-flex align-items-center" href="{% url 'dashboard' %}" style="transition: opacity 0.5s ease-in-out; pointer-events: none;">
-          Kedai Bang Jun
-        </a>
+        <a id="brand-header" class="navbar-brand fw-semibold text-white opacity-0 d-flex align-items-center" href="{% url 'dashboard' %}" style="transition: opacity 0.5s ease-in-out; pointer-events: none;">Kedai Bang Jun</a>
       </div>
-      <p class="d-md-block d-none text-white fw-semibold my-0">Hello, kasir</p>
+      <p class="d-md-block d-none text-white fw-semibold my-0">Hello, {{ user.username }}</p>
     </section>
 
     <div id="overlay" class="overlay d-none"></div>
