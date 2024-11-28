@@ -71,7 +71,7 @@ def cart_update(request, item_id):
 def Dashboard(request):
     user = request.user
     if user.groups.filter(name='Kasir').exists():
-        return redirect('dashboard')
+        return render(request, 'dashboard/kasir.html')
     return HttpResponseForbidden("You do not have permission to access this page.")
 
 @login_required

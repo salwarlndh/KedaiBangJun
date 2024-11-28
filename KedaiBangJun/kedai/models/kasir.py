@@ -10,7 +10,7 @@ class Kasir(models.Model):
     phone_number = models.CharField(max_length=13, unique=True)
     address = models.TextField()
     
-    admin_id = models.ForeignKey(Admin, on_delete=models.CASCADE, default=1)
+    # admin_id = models.ForeignKey(Admin, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return self.name
