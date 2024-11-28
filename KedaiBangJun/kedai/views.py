@@ -8,6 +8,7 @@ from .decorators import group_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.db.models import Q
+from django.contrib.auth import logout
 
 def homepage(request):
     return render(request, 'homepage/index.html')
@@ -84,6 +85,9 @@ def dashboard_kasir(request):
 def dashboard_admin(request):
     return render(request, 'dashboard/index.html')
 
+def dashboard_logout(request):
+    logout(request)
+    return redirect('homepage')  
 
 def product_search(request):
     query = request.GET.get('q')
