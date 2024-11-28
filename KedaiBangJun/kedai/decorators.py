@@ -1,15 +1,16 @@
-from django.shortcuts import redirect
-from django.contrib import messages
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
 from functools import wraps
 
-def kasir_required():
+def group_required(*group_names): 
     def decorator(view_func):
         @wraps(view_func)
+        @login_required
         def _wrapped_view(request, *args, **kwargs):
-            if request.user.is_authenticated and request.user.is_superuser and request.user.is_staff:
+            # Check if the user is in any of the specified groups
+            if request.user.groups.filter(name__in=group_names).exists():
                 return view_func(request, *args, **kwargs)
             else:
-                messages.error(request, 'You must signed in as cashier to access this page.')
-                return redirect('sign-in')
+                raise PermissionDenied # Raise a 403 error if unauthorized
         return _wrapped_view
     return decorator

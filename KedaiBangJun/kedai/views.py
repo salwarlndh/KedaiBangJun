@@ -1,16 +1,17 @@
 from django.shortcuts import render
-<<<<<<< HEAD
 from .models import Product
-=======
-from .decorators import kasir_required
+from .decorators import group_required
 from django.contrib.auth.models import User
-from django.http import JsonResponse
+from django.http import HttpResponseForbidden, JsonResponse
 from django.shortcuts import render
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib import messages
->>>>>>> 84aefad21697880841e288e286b38c769be06e87
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect, render
+from django.http import JsonResponse
 
 def homepage(request):
     return render(request, 'homepage/index.html')
@@ -25,61 +26,53 @@ def products_index(request):
 def contact(request):
     return render(request, 'homepage/contact.html')
 
-# @kasir_required()
+
+@login_required
 def Dashboard(request):
-    context = {
-        'section': 'dashboard',
-    }
-    return render(request, 'dashboard/index.html', context)
+    user = request.user
+    if user.groups.filter(name='Kasir').exists():
+        return redirect('dashboard_kasir')
+    elif user.groups.filter(name='Admin').exists():
+        return redirect('dashboard_admin')
+    return HttpResponseForbidden("You do not have permission to access this page.")
 
-def SignIn(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+@login_required
+@group_required('Kasir')
+def dashboard_kasir(request):
+    return render(request, 'dashboard/index.html')
 
-        if not username or not password:
-            return JsonResponse({'is_superuser': False, 'error': 'Username and password are required.'}, status=400)
+@login_required
+@group_required('Admin')
+def dashboard_admin(request):
+    return render(request, 'dashboard/index.html')
 
-        if user is not None and user.is_superuser and user.is_staff:
-            login(request, user)
-            return JsonResponse({'is_superuser': True})
-        else:
-            return JsonResponse({'is_superuser': False, 'error': 'Invalid username or password.'}, status=403)
+# def SignIn(request):    
+#     if request.user.is_authenticated:
+#         return redirect('dashboard')
+    
+#     context = {
+#         'section' : 'sign-in'
+#     }
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
 
-    context = {
-        'section': 'sign-in',
-    }
-    return render(request, 'homepage/sign-in.html', context)
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             redirect_url = 'dashboard' if user.groups.filter(name='Kasir').exists() else 'homepage'
+#             return JsonResponse({
+#                 'status': 'success',
+#                 'message': 'Login successful!',
+#                 'redirect_url': redirect_url
+#             })
+#         else:
+#             return JsonResponse({
+#                 'status': 'error',
+#                 'message': 'invalid username or password',
+#                 'errors': {
+#                     'login': ['Invalid username or password.']
+#                 }
+#             })
 
-def SignUp(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        phone_number = request.POST.get('phone_number')
-        address = request.POST.get('address')
-
-        if not name or not username or not email or not phone_number or not address:
-            return JsonResponse({'error': 'name, username, email, phone number and address are required.'}, status=400)
-
-        try:
-            # Buat pengguna baru
-            user = User.objects.create_user(name=name, username=username, email=email, phone_number=phone_number, address=address)
-            user.save()
-            return JsonResponse({'success': True, 'message': 'User created successfully.'})
-        except IntegrityError:
-            return JsonResponse({'error': 'Username already exists.'}, status=400)
-
-    context = {
-        'section': 'sign-up',
-    }
-    return render(request, 'homepage/sign-up.html', context)
-
-def SignOut(request):
-    if request.user.is_authenticated:
-        logout(request)
-        messages.success(request, "You have been logged out successfully.")
-    else:
-        messages.info(request, "You were not logged in.")
-    return redirect('sign-in')
+#     return render(request, 'homepage/sign-in.html', context)
