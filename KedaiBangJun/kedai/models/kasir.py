@@ -16,7 +16,7 @@ class Kasir(models.Model):
         return self.name
     
 @receiver(post_save, sender=Kasir)
-def create_user_for_Admin(sender, instance, created, **kwargs):
+def create_user_for_Kasir(sender, instance, created, **kwargs):
     if created:
         user = User.objects.create_user(
             username=instance.name,

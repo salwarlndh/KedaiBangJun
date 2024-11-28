@@ -52,13 +52,16 @@
             <ul class="navbar-nav ms-auto me-3 gap-2">          
               {% if user.is_authenticated %}
                   <li class="nav-item">
-                      <a class="nav-link" href="{% url 'sign-out' %}">
+                    <form action="{% url 'logout' %}" method="post">
+                      {% csrf_token %}
+                      <a class="nav-link" href="{% url 'logout' %}">
                           Sign Out <i class="fa-solid fa-arrow-right-from-bracket ms-2"></i>
                       </a>
+                    </form>
                   </li>
               {% else %}
                   <li class="nav-item">
-                      <a class="nav-link {% if section == 'sign-in' %} active{% endif %}" href="{% url 'sign-in' %}">
+                      <a class="nav-link {% if section == 'login' %} active{% endif %}" href="{% url 'login' %}">
                           Sign In<i class="fas fa-arrow-right-to-bracket ms-2"></i>
                       </a>
                   </li>
