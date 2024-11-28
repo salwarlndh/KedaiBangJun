@@ -1,10 +1,11 @@
 from django.contrib import admin
-from django.contrib.auth.hashers import make_password # Untuk hashing password
+from django.contrib.auth.hashers import make_password
+
+from .models.kasir import Kasir 
 from .models.admin import Admin
 from .models.customers import Customer
 from .models.orders import Order
 from .models.products import Product
-# from .models.cart import Cart
 from .models.users import Users
 
 class AdminAdmin(admin.ModelAdmin):
@@ -27,8 +28,8 @@ class AdminAdmin(admin.ModelAdmin):
 
 # Daftarkan admin dengan custom AdminAdmin
 admin.site.register(Admin, AdminAdmin)
+admin.site.register(Kasir)
 admin.site.register(Customer)
 admin.site.register(Order)
 admin.site.register(Product)
-# admin.site.register(Cart)
 admin.site.register(Users)

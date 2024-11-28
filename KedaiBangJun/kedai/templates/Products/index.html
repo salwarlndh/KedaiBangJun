@@ -4,11 +4,11 @@
 {% endblock %}
 {% block content %}
 {% load static %}
-<div class="hero p-3 rounded-lg m-3 my-5" id="heroProduct">
+<div class="hero p-4 rounded-lg m-3 my-5" id="heroProduct">
     <h1 class="display-6">Our Menu </h1>
-    <form method="GET" action="#" class="d-flex mb-3">
-      <input class="form-control me-2" type="search" name="q" placeholder="Find menu..." value="{{ query|default:'' }}" aria-label="Search">
-      <button class="btn btn-outline-light" type="submit" style="color: white;">Find</button>
+    <form method="GET" action="{% url 'product_search' %}" class="d-flex mb-3">
+      <input class="form-control me-2" type="search" name="q" placeholder="Find products..." value="{{ query|default:'' }}" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Find</button>
     </form>
 </div>
 <div class="container ps-4">
@@ -43,6 +43,7 @@
       },
 
       success: function(json){
+        //console.log(json)
         document.getElementById("cart_quantity").textContent=json.qty
       },
 
