@@ -159,15 +159,12 @@ body{
     margin-top: 2rem;
     max-width: 100%;
     height: auto;
-    margin-bottom: 6rem;
   }
   .section-title {
-    margin: 2rem;
-    font-size: 2rem;
-    font-weight: bold;
     color: #2c3e50;
   }
   .section-content {
+    text-align: justify;
     font-size: 1rem;
     color: #7f8c8d;
   }

@@ -23,12 +23,12 @@ def products_index(request):
 def contact(request):
     return render(request, 'homepage/contact.html')
 
-@login_required
+# @login_required
 def cart_index(request):
     cart_items = CartItem.objects.filter(cart__user=request.user)
     return render(request, 'Carts/index.html', {'cart_items': cart_items})
 
-@login_required
+# @login_required
 def cart_add(request, product_id, name, price):
     if request.method == 'POST':
         product_id = int(request.POST.get('product_id'))  # ID produk yang ingin ditambahkan ke keranjang
@@ -49,7 +49,7 @@ def cart_add(request, product_id, name, price):
         cart_item.save()
         return redirect('cart_index')
 
-@login_required
+# @login_required
 def cart_delete(request, item_id):
     try:
         cart_item = CartItem.objects.get(id=item_id)  # Cari item berdasarkan ID
@@ -58,7 +58,7 @@ def cart_delete(request, item_id):
         pass
     return redirect('view_cart')
 
-@login_required
+# @login_required
 def cart_update(request, item_id):
     if request.method == 'POST':
         quantity = int(request.POST.get('quantity'))  # Ambil kuantitas yang baru

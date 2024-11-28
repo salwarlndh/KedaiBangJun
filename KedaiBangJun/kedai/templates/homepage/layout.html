@@ -49,24 +49,6 @@
                 <span class="bagde bg-success text-white ms-2 mx-1 rounded-pill fs-6" id="cart_quantity">{{ cart_items|length }}</span>
               </a>
             </li>
-            {% comment %} <ul class="navbar-nav ms-auto me-3 gap-2">          
-              {% if user.is_authenticated %}
-                  <li class="nav-item">
-                    <form action="{% url 'logout' %}" method="post">
-                      {% csrf_token %}
-                      <a class="nav-link" href="{% url 'logout' %}">
-                          Sign Out <i class="fa-solid fa-arrow-right-from-bracket ms-2"></i>
-                      </a>
-                    </form>
-                  </li>
-              {% else %}
-                  <li class="nav-item">
-                      <a class="nav-link {% if section == 'login' %} active{% endif %}" href="{% url 'login' %}">
-                          Sign In<i class="fas fa-arrow-right-to-bracket ms-2"></i>
-                      </a>
-                  </li>
-              {% endif %}
-          </ul>    {% endcomment %}
           </ul>
         </div>
       </div>
@@ -115,10 +97,7 @@
                   
                 </ul>
             </div>
-
-            
         </div>
-    
         <div class="d-flex flex-column flex-md-row gap-4 justify-content-center align-items-center">
             <div class="d-flex align-items-center">
                 <span class="text-light fw-bold">&copy; 2024 Kedai Bang Jun, All Rights Reserved</span>
