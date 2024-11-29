@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "kedai",
     "django_bootstrap5",
-    "fontawesomefree"
+    "fontawesomefree",
+    "rest_framework"
 ]
 
 MIDDLEWARE = [
