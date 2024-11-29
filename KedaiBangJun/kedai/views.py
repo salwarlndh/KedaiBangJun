@@ -1,19 +1,19 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Product
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import Product, Order
 from .cart import Cart
-from django.shortcuts import render
-from .models import Product
 from .decorators import group_required
 from django.http import HttpResponseForbidden, JsonResponse
-from django.shortcuts import redirect, render
 from django.db.models import Q
 from django.contrib.auth import logout
 from rest_framework import viewsets
 from .serializers import ProductSerializer
 
 def homepage(request):
-    return render(request, 'homepage/index.html')
+    product = Product.objects.all()
+    return render(request, 'homepage/index.html', {'product': product})
 
 def about(request):
     return render(request, 'homepage/about.html')
@@ -67,8 +67,45 @@ def get_product_details(request, product_id):
 def Dashboard(request):
     user = request.user
     if user.groups.filter(name='Kasir').exists():
-        return render(request, 'dashboard/kasir.html')
+        orders = Order.objects.all()
+        for order in orders:
+            order.total = order.quantity * order.price
+        return render(request, 'dashboard/kasir.html', {'orders': orders})
     return HttpResponseForbidden("You do not have permission to access this page.")
+
+def checkout(request):
+    if request.method == 'POST':
+        try:
+            # Ambil data dari request
+            data = json.loads(request.body)
+            customer_name = data.get('customer_name')
+            cart = data.get('cart')
+
+            if not customer_name or not cart:
+                return JsonResponse({'message': 'Nama pelanggan dan cart tidak boleh kosong.'}, status=400)
+
+            # Debugging: Log data cart untuk memastikan semuanya sesuai
+            print("Cart data received:", cart)
+
+            # Proses setiap item dalam cart
+            for item in cart:
+                order = Order(
+                    customer_name=customer_name,
+                    product_id=item['product_id'],  # Pastikan product_id ada
+                    product_name=item['product_name'],
+                    quantity=item['quantity'],
+                    price=item['price'],
+                    total=item['total']  # Total dihitung di frontend
+                )
+                order.save()
+
+            return JsonResponse({'message': 'Pemesanan berhasil!'}, status=200)
+
+        except Exception as e:
+            return JsonResponse({'message': str(e)}, status=500)
+
+    return JsonResponse({'message': 'Invalid method'}, status=405)
+
 
 @login_required
 @group_required('Kasir')
@@ -104,3 +141,46 @@ class ProductViewSet(viewsets.ModelViewSet):
     """
     queryset = Product.objects.all() # Mengambil semua data mahasiswa dari database
     serializer_class = ProductSerializer # Menggunakan serializer yang sudah kita buat
+    
+@csrf_exempt  # Hanya untuk demo. Pastikan CSRF tetap diaktifkan untuk aplikasi yang sebenarnya.
+def update_order(request, order_id):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            quantity = data.get('quantity')
+            total = data.get('total')
+
+            # Cari pesanan di database
+            order = Order.objects.get(id=order_id)
+            order.quantity = quantity
+            order.total = total
+            order.save()
+
+            return JsonResponse({'message': 'Order updated successfully'})
+
+        except Order.DoesNotExist:
+            return JsonResponse({'message': 'Order not found'}, status=404)
+
+        except Exception as e:
+            return JsonResponse({'message': f'Error: {str(e)}'}, status=400)
+
+    return JsonResponse({'message': 'Invalid request method'}, status=405)
+
+def delete_order(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            customer_name = data.get('customer_name')
+
+            # Cari order berdasarkan nama pelanggan
+            order = Order.objects.filter(customer_name=customer_name)
+
+            if order.exists():
+                # Hapus order
+                order.delete()
+                return JsonResponse({'message': 'Pesanan berhasil dihapus!'}, status=200)
+            else:
+                return JsonResponse({'message': 'Pesanan tidak ditemukan!'}, status=404)
+        except Exception as e:
+            return JsonResponse({'message': f'Terjadi kesalahan: {str(e)}'}, status=500)
+    return JsonResponse({'message': 'Metode tidak diizinkan'}, status=405)

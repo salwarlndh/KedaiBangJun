@@ -25,6 +25,10 @@ urlpatterns = [
     path('logout/', views.dashboard_logout, name='logout'),
     
     path('api/', include(router.urls)), # Ini akan menambahkan semua URL yang dibutuhkan untuk API
+
+    path('checkout/', views.checkout, name='checkout'),
+    path('update_order/<int:order_id>/', views.update_order, name='update_order'),
+    path('delete_order/', views.delete_order, name='delete_order'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
