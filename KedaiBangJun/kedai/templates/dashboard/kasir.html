@@ -14,45 +14,47 @@
           <table class="table table-hover">
             <thead class="table-light">
               <tr>
-                <th>Product Name</th>
+                <th>Nama Pelanggan</th>
+                <th>Product</th>
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Total</th>
-                <th>Detail</th>
+                <th>Status</th>
               </tr>
             </thead>
-            <tbody id="orderTable">
-              {% if cart_products %}
-              {% for product in cart_products %}
-              <tr class="cart-item" data-id="{{ product.id }}">
-                  <td>{{ product.name }}</td>
-                  <td>
-                      <select class="form-select form-select sm quantity-select" aria-label="Default select example">
-                          <option value="1" {% if product.quantity == 1 %}selected{% endif %}>1</option>
-                          <option value="2" {% if product.quantity == 2 %}selected{% endif %}>2</option>
-                          <option value="3" {% if product.quantity == 3 %}selected{% endif %}>3</option>
-                          <option value="4" {% if product.quantity == 4 %}selected{% endif %}>4</option>
-                          <option value="5" {% if product.quantity == 5 %}selected{% endif %}>5</option>
-                          <option value="6" {% if product.quantity == 6 %}selected{% endif %}>6</option>
-                          <option value="7" {% if product.quantity == 7 %}selected{% endif %}>7</option>
-                          <option value="8" {% if product.quantity == 8 %}selected{% endif %}>8</option>
-                          <option value="9" {% if product.quantity == 9 %}selected{% endif %}>9</option>
-                          <option value="10" {% if product.quantity == 10 %}selected{% endif %}>10</option>
+            <tbody>
+              {% if orders %}
+                {% for order in orders %}
+                  <tr class="cart-item" data-id="{{ order.id }}">
+                    <td>{{ order.customer_name }}</td>
+                    <td>{{ order.product_name }}</td>
+                    <td>
+                      <select class="form-select form-select-sm quantity-select" aria-label="Select quantity" data-product-id="{{ order.id }}">
+                        <option value="1" {% if order.quantity == 1 %}selected{% endif %}>1</option>
+                        <option value="2" {% if order.quantity == 2 %}selected{% endif %}>2</option>
+                        <option value="3" {% if order.quantity == 3 %}selected{% endif %}>3</option>
+                        <option value="4" {% if order.quantity == 4 %}selected{% endif %}>4</option>
+                        <option value="5" {% if order.quantity == 5 %}selected{% endif %}>5</option>
+                        <option value="6" {% if order.quantity == 6 %}selected{% endif %}>6</option>
+                        <option value="7" {% if order.quantity == 7 %}selected{% endif %}>7</option>
+                        <option value="8" {% if order.quantity == 8 %}selected{% endif %}>8</option>
+                        <option value="9" {% if order.quantity == 9 %}selected{% endif %}>9</option>
+                        <option value="10" {% if order.quantity == 10 %}selected{% endif %}>10</option>
                       </select>
-                  </td>
-                  <td>{{ product.price }}</td>
-                  <td class="item-total">{{ product.price|floatformat:0 }}</td>
-                  <td>
-                    <button class="btn btn-success btn-sm bg-transparent text-success">Confirm</button>
-                  </td>
-              </tr>
-              {% endfor %}
+                    </td>
+                    <td>{{ order.price }}</td>
+                    <td class="item-total">{{ order.total|floatformat:2 }}</td>
+                    <td>
+                      <button class="btn btn-success btn-sm bg-transparent text-success confirm-btn" data-customer-name="{{ order.customer_name }}">Confirm</button>
+                    </td>
+                  </tr>
+                {% endfor %}
               {% else %}
-              <tr>
+                <tr>
                   <td colspan="6">No orders received yet</td>
-              </tr>
+                </tr>
               {% endif %}
-            </tbody>
+              </tbody>            
           </table>
         </div>
       </div>
@@ -60,4 +62,96 @@
   </section>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.querySelectorAll('.quantity-select').forEach(select => {
+      select.addEventListener('change', function(event) {
+          const productId = event.target.dataset.productId;  // Ambil ID produk
+          const newQuantity = parseInt(event.target.value);  // Ambil quantity yang dipilih
+          
+          // Ambil harga produk dari kolom harga
+          const row = event.target.closest('tr');
+          const price = parseFloat(row.querySelector('td:nth-child(4)').textContent); // Harga ada di kolom ke-4
+          const newTotal = price * newQuantity;  // Hitung total baru
+          
+          // Update total di halaman
+          row.querySelector('.item-total').textContent = newTotal.toFixed(2);  // Perbarui total produk
+          
+          // Kirim update quantity dan total ke server (jika perlu)
+          fetch(`/update_cart/${productId}/`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': getCookie('csrftoken')  // Pastikan CSRF token disertakan
+              },
+              body: JSON.stringify({
+                  quantity: newQuantity,
+                  total: newTotal
+              })
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  console.log('Cart updated successfully');
+              } else {
+                  console.error('Failed to update cart:', data.message);
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+      });
+  });
+
+  document.querySelectorAll('.confirm-btn').forEach(button => {
+    button.addEventListener('click', async function () {
+        const customerName = this.getAttribute('data-customer-name'); // Ambil nama pelanggan dari atribut data-customer-name
+
+        // Menggunakan SweetAlert untuk konfirmasi
+        swal({
+            title: "Apakah Anda yakin?",
+            text: `Anda akan menghapus pesanan untuk ${customerName}.`,
+            icon: "warning",
+            buttons: ["Batal", "Hapus"],
+            dangerMode: true,
+        }).then(async (willDelete) => {
+            if (willDelete) {
+                try {
+                    const response = await fetch('/delete_order/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken') // CSRF token
+                        },
+                        body: JSON.stringify({ customer_name: customerName })
+                    });
+
+                    if (response.ok) {
+                        swal("Pesanan Berhasil Dihapus!", "Pesanan telah berhasil dihapus.", "success").then(() => {
+                            location.reload(); // Refresh halaman untuk memperbarui daftar order
+                        });
+                    } else {
+                        const errorData = await response.json();
+                        swal("Gagal Menghapus Pesanan", `Error: ${errorData.message}`, "error");
+                    }
+                } catch (error) {
+                    console.error('Error during order deletion:', error);
+                    swal("Terjadi Kesalahan", "Gagal menghapus pesanan. Coba lagi nanti.", "error");
+                }
+            } else {
+                swal("Pesanan Anda Aman!", "Pesanan tidak dihapus.", "info");
+            }
+        });
+    });
+});
+
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`; // Menambahkan titik koma untuk memastikan kita bisa membagi cookie
+  const parts = value.split(`; ${name}=`); // Mencari cookie dengan nama yang diberikan
+  if (parts.length === 2) return parts.pop().split(';').shift(); // Mengambil nilai cookie jika ditemukan
+  return null; // Mengembalikan null jika cookie tidak ditemukan
+}
+
+  
+  </script>
 {% endblock %}

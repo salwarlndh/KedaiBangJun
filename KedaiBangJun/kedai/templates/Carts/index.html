@@ -75,7 +75,7 @@
                   </tbody>
               </table>
               <div class="d-flex justify-content-center">
-                  <button class="btn btn-success Btncheckout" type="button" style="width: 10rem; font-weight: bold;" onclick="confirmCart()">Checkout</button>
+                  <button class="btn btn-success Btncheckout" type="button" style="width: 10rem; font-weight: bold;" id="checkout-btn">Checkout</button>
               </div>
           </div>
       </div>
@@ -139,16 +139,107 @@
             </tr>
         `;
         modalBody.innerHTML += grandTotalRow;
-    });    
+    
+        // Tambahkan form untuk memasukkan nama
+        const nameForm = `
+            <div style="margin-top: 20px;">
+                <label for="customer-name" class="mb-2"><strong>Nama:</strong></label>
+                <input type="text" id="customer-name" class="form-control" placeholder="Masukkan nama Anda">
+            </div>
+        `;
+        modalBody.innerHTML += nameForm;
+    });
     
     
-function confirmCart(){
-  swal("Pemesanan Berhasil", "Silahkan Bayar Kekasir", "success").then(() => {
-    clearCartFromLocalStorage();
-    clearCartFromSessionStorage()
-    window.location.href = '{% url 'homepage' %}';
-  });
-}
+    
+    document.getElementById('checkout-btn').addEventListener('click', async function () {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const customerName = document.getElementById('customer-name').value;
+    
+        // Validasi nama pelanggan
+        if (!customerName) {
+            swal("Gagal", "Silakan masukkan nama pelanggan sebelum checkout!", "error");
+            return;
+        }
+    
+        // Pastikan cart tidak kosong
+        if (cart.length === 0) {
+            swal("Gagal", "Keranjang Kosong. Silakan tambahkan produk terlebih dahulu!", "error");
+            return;
+        }
+    
+        // Fungsi untuk mengambil harga produk berdasarkan id dari server
+        const fetchProductPrice = async (productId) => {
+            try {
+                const response = await fetch(`/product/${productId}/`); // Sesuaikan URL dengan API endpoint
+                const data = await response.json();
+                if (data.price) {
+                    return parseFloat(data.price); // Mengembalikan harga sebagai float
+                } else {
+                    return 0; // Jika tidak ditemukan harga, kembalikan 0
+                }
+            } catch (error) {
+                console.error('Error fetching product details:', error);
+                return 0; // Jika gagal, harga di-set 0
+            }
+        };
+    
+        // Format cart untuk mengirim ke server
+        const cartData = [];
+        for (let item of cart) {
+            // Ambil harga produk terbaru dari API
+            const price = await fetchProductPrice(item.id); // Mengambil harga yang sesuai dengan product_id
+            const total = price * item.quantity; // Hitung total berdasarkan harga yang diperoleh
+    
+            // Masukkan data ke dalam cartData
+            cartData.push({
+                product_id: item.id,     // ID produk
+                product_name: item.name, // Nama produk
+                quantity: item.quantity, // Kuantitas produk
+                price: price,            // Harga yang diperoleh dari API
+                total: total            // Total per produk
+            });
+        }
+    
+        console.log("Sending cart data:", cartData); // Log untuk debugging
+    
+        // Kirim data cart ke server
+        try {
+            const response = await fetch('/checkout/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken') // CSRF token
+                },
+                body: JSON.stringify({
+                    customer_name: customerName,
+                    cart: cartData // Kirim cartData yang sudah terupdate
+                })
+            });
+    
+            if (response.ok) {
+                swal("Pemesanan Berhasil", "Silahkan Bayar Kekasir", "success").then(() => {
+                    localStorage.removeItem('cart'); // Hapus data cart setelah checkout
+                    window.location.href = '{% url "homepage" %}'; // Redirect ke homepage
+                });
+            } else {
+                const errorData = await response.json();
+                swal("Gagal Menyimpan Pesanan", `Error: ${errorData.message}`, "error");
+            }
+        } catch (error) {
+            console.error('Error during checkout:', error);
+            swal("Terjadi Kesalahan", "Gagal menyimpan pesanan. Coba lagi nanti.", "error");
+        }
+    });
+    
+    // Fungsi untuk mendapatkan CSRF token dari cookie
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    
+    
 
 window.onload = function () {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -233,7 +324,7 @@ function updateCartQuantity() {
 
 
     // Fungsi untuk update tabel setelah perubahan kuantitas
-    function updateCartTable() {
+    {% comment %} function updateCartTable() {
         cartTableBody.innerHTML = ''; // Bersihkan tabel
         cart.forEach(item => {
             const total = item.price * item.quantity; // Hitung total untuk setiap produk
@@ -257,25 +348,8 @@ function updateCartQuantity() {
     function updateCartQuantity() {
         const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
         document.getElementById('cart_quantity').textContent = totalQuantity;
-    }
+    } {% endcomment %}
 
-
-
-
-  
-  // Fungsi untuk menampilkan data keranjang ke halaman
-  function displayCart(cart) {
-    // Asumsikan kita memiliki elemen dengan id 'cart-contents' untuk menampilkan isi keranjang
-    const cartContents = document.getElementById('cart-contents');
-    cartContents.innerHTML = ''; // Bersihkan dulu kontennya
-  
-    cart.forEach(item => {
-      // Tampilkan item-item keranjang
-      const itemElement = document.createElement('div');
-      itemElement.innerHTML = `${item.name} - ${item.quantity} - ${item.price}`;
-      cartContents.appendChild(itemElement);
-    });
-}
 function saveCartToSessionStorage(cart) {
   sessionStorage.setItem('cart', JSON.stringify(cart));
 }

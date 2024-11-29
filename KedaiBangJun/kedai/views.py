@@ -1,35 +1,21 @@
-<<<<<<< HEAD
-from django.shortcuts import render, get_object_or_404
-from .models import Product
-from .decorators import group_required
-from django.contrib.auth.models import User
-from django.http import HttpResponseForbidden, JsonResponse
-from django.db import IntegrityError
-from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import get_object_or_404, render, redirect
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, HttpResponse
-from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.http import JsonResponse, Http404
+import json
+from .models import Product, Order
 from .cart import Cart
-from .models import Product
-
-=======
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Product
-from .models.Cart import Cart, CartItem
 from django.shortcuts import render
 from .models import Product
 from .decorators import group_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import Q
 from django.contrib.auth import logout
->>>>>>> 2a401f08d1ccd0b3f9d3f6c7c39e2b073dbd6d60
 
 def homepage(request):
-    return render(request, 'homepage/index.html')
+    product = Product.objects.all()
+    return render(request, 'homepage/index.html', {'product': product})
 
 def about(request):
     return render(request, 'homepage/about.html')
@@ -41,20 +27,15 @@ def products_index(request):
 def contact(request):
     return render(request, 'homepage/contact.html')
 
-<<<<<<< HEAD
 def cart(request):
     return {'cart' : Cart(request)}
 
 
-=======
-# @login_required
->>>>>>> 2a401f08d1ccd0b3f9d3f6c7c39e2b073dbd6d60
 def cart_index(request):
     cart = Cart(request)
     cart_products = cart.get_prods
     return render(request, "Carts/index.html", {"cart_products":cart_products})
 
-<<<<<<< HEAD
 def cart_add(request):
     cart = Cart(request)
     if request.POST.get('action') == 'post':
@@ -65,26 +46,13 @@ def cart_add(request):
         # response = JsonResponse({'Product Name: ': product.name})
         response =  JsonResponse({'qty': cart_quantity})
         return response
-=======
-# @login_required
-def cart_add(request, product_id, name, price):
-    if request.method == 'POST':
-        product_id = int(request.POST.get('product_id'))  # ID produk yang ingin ditambahkan ke keranjang
-        quantity = int(request.POST.get('quantity', 1))  # Kuantitas produk, default 1 jika tidak disediakan
-        product = Product.objects.get(id=product_id)  # Ambil produk berdasarkan ID
->>>>>>> 2a401f08d1ccd0b3f9d3f6c7c39e2b073dbd6d60
         
-def cart_delete(request):
-    pass
-def cart_update(request):
-    pass
 def clear_cart(request):
     # Menghapus cart dari session
     if 'cart' in request.session:
         del request.session['cart']  # Menghapus data keranjang dari session
     return JsonResponse({'message': 'Cart cleared successfully'})
 
-<<<<<<< HEAD
 def get_product_details(request, product_id):
     try:
         product = Product.objects.get(id=product_id)
@@ -99,33 +67,48 @@ def get_product_details(request, product_id):
 
 
 # @kasir_required()
-=======
-# @login_required
-def cart_delete(request, item_id):
-    try:
-        cart_item = CartItem.objects.get(id=item_id)  # Cari item berdasarkan ID
-        cart_item.delete()  # Hapus item dari keranjang
-    except CartItem.DoesNotExist:
-        pass
-    return redirect('view_cart')
-
-# @login_required
-def cart_update(request, item_id):
-    if request.method == 'POST':
-        quantity = int(request.POST.get('quantity'))  # Ambil kuantitas yang baru
-        cart_item = CartItem.objects.get(id=item_id)  # Ambil item berdasarkan ID
-        cart_item.quantity = quantity  # Update kuantitas item
-        cart_item.save()
-        return redirect('cart_index')  # Redirect ke halaman keranjang
-
-
-@login_required
->>>>>>> 2a401f08d1ccd0b3f9d3f6c7c39e2b073dbd6d60
 def Dashboard(request):
     user = request.user
     if user.groups.filter(name='Kasir').exists():
-        return render(request, 'dashboard/kasir.html')
+        orders = Order.objects.all()
+        for order in orders:
+            order.total = order.quantity * order.price
+        return render(request, 'dashboard/kasir.html', {'orders': orders})
     return HttpResponseForbidden("You do not have permission to access this page.")
+
+def checkout(request):
+    if request.method == 'POST':
+        try:
+            # Ambil data dari request
+            data = json.loads(request.body)
+            customer_name = data.get('customer_name')
+            cart = data.get('cart')
+
+            if not customer_name or not cart:
+                return JsonResponse({'message': 'Nama pelanggan dan cart tidak boleh kosong.'}, status=400)
+
+            # Debugging: Log data cart untuk memastikan semuanya sesuai
+            print("Cart data received:", cart)
+
+            # Proses setiap item dalam cart
+            for item in cart:
+                order = Order(
+                    customer_name=customer_name,
+                    product_id=item['product_id'],  # Pastikan product_id ada
+                    product_name=item['product_name'],
+                    quantity=item['quantity'],
+                    price=item['price'],
+                    total=item['total']  # Total dihitung di frontend
+                )
+                order.save()
+
+            return JsonResponse({'message': 'Pemesanan berhasil!'}, status=200)
+
+        except Exception as e:
+            return JsonResponse({'message': str(e)}, status=500)
+
+    return JsonResponse({'message': 'Invalid method'}, status=405)
+
 
 @login_required
 @group_required('Kasir')
@@ -155,33 +138,45 @@ def product_search(request):
         product = Product.objects.all()
     return render(request, 'Products/index.html', {'product': product, 'query': query})
 
-# def SignIn(request):    
-#     if request.user.is_authenticated:
-#         return redirect('dashboard')
-    
-#     context = {
-#         'section' : 'sign-in'
-#     }
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
+@csrf_exempt  # Hanya untuk demo. Pastikan CSRF tetap diaktifkan untuk aplikasi yang sebenarnya.
+def update_order(request, order_id):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            quantity = data.get('quantity')
+            total = data.get('total')
 
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#             redirect_url = 'dashboard' if user.groups.filter(name='Kasir').exists() else 'homepage'
-#             return JsonResponse({
-#                 'status': 'success',
-#                 'message': 'Login successful!',
-#                 'redirect_url': redirect_url
-#             })
-#         else:
-#             return JsonResponse({
-#                 'status': 'error',
-#                 'message': 'invalid username or password',
-#                 'errors': {
-#                     'login': ['Invalid username or password.']
-#                 }
-#             })
+            # Cari pesanan di database
+            order = Order.objects.get(id=order_id)
+            order.quantity = quantity
+            order.total = total
+            order.save()
 
-#     return render(request, 'homepage/sign-in.html', context)
+            return JsonResponse({'message': 'Order updated successfully'})
+
+        except Order.DoesNotExist:
+            return JsonResponse({'message': 'Order not found'}, status=404)
+
+        except Exception as e:
+            return JsonResponse({'message': f'Error: {str(e)}'}, status=400)
+
+    return JsonResponse({'message': 'Invalid request method'}, status=405)
+
+def delete_order(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            customer_name = data.get('customer_name')
+
+            # Cari order berdasarkan nama pelanggan
+            order = Order.objects.filter(customer_name=customer_name)
+
+            if order.exists():
+                # Hapus order
+                order.delete()
+                return JsonResponse({'message': 'Pesanan berhasil dihapus!'}, status=200)
+            else:
+                return JsonResponse({'message': 'Pesanan tidak ditemukan!'}, status=404)
+        except Exception as e:
+            return JsonResponse({'message': f'Terjadi kesalahan: {str(e)}'}, status=500)
+    return JsonResponse({'message': 'Metode tidak diizinkan'}, status=405)
